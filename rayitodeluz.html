@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Rayito de Luz ✨ - Clases y Material Didáctico</title>
+  <meta name="description" content="Rayito de Luz - Clases personalizadas, refuerzo escolar y material didáctico. Sembrando amor por el aprendizaje."/>
+  <link rel="stylesheet" href="rayito.css">
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">RY</div>
+        <div>
+          <div class="title">Rayito de Luz ✨</div>
+          <div class="subtitle">Sembrando amor por el aprendizaje</div>
+        </div>
+      </div>
+
+      <nav aria-label="Navegación principal">
+        <a href="#inicio">Inicio</a>
+        <a href="#sobre">Sobre mí</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#galeria">Galería</a>
+        <a href="#material">Material</a>
+        <a href="#contacto" class="cta">Contacto</a>
+      </nav>
+    </header>
+
+    <section id="inicio" class="hero hero-card">
+      <div class="hero-card">
+        <h1>Rayito de Luz ✨ — Clases personalizadas & Material didáctico</h1>
+        <p>Clases de refuerzo, materiales imprimibles, y acompañamiento educativo para preescolar y primaria. Metodologías lúdicas y amorosas para que el aprendizaje sea divertido.</p>
+        <div class="features">
+          <div class="chip">Clases Personalizadas</div>
+          <div class="chip">Material imprimible</div>
+          <div class="chip">Talleres y manualidades</div>
+          <div class="chip">Plan lector</div>
+        </div>
+        <div class="hero-buttons">
+          <a class="btn whatsapp" href="#contacto">Contactar por WhatsApp</a>
+          <a class="link" href="#material">Ver material ↓</a>
+        </div>
+      </div>
+
+      <aside class="aside-card">
+        <h3>Sesiones</h3>
+        <p>Clases individuales y grupales. Planes por horas o paquetes mensuales. Horarios flexibles.</p>
+        <ul>
+          <li>Preescolar</li>
+          <li>Primaria</li>
+          <li>Material imprimible</li>
+        </ul>
+      </aside>
+    </section>
+
+    <section id="sobre" class="hero-card">
+      <h2>Sobre Rayito de Luz</h2>
+      <p>Soy Yurley, fundadora de Rayito de Luz. Creo en el aprendizaje por el juego, en materiales bonitos que motiven al niño y en acompañar a las familias con recursos claros y sencillos.</p>
+      <p><strong>Metodología:</strong> actividades lúdicas, lecturas guiadas, fichas imprimibles y trabajo con padres.</p>
+    </section>
+
+    <section id="servicios" class="hero-card">
+      <h2>Nuestros servicios</h2>
+      <div class="grid">
+        <article class="service"><h3>Clases individuales</h3><p>Sesiones enfocadas en las necesidades del niño: lectura, matemáticas y habilidades socioemocionales.</p></article>
+        <article class="service"><h3>Clases grupales</h3><p>Talleres de lectura y manualidades para grupos pequeños con dinámicas divertidas.</p></article>
+        <article class="service"><h3>Material imprimible</h3><p>Fichas, juegos de mesa didácticos en PDF y guías para padres listos para imprimir.</p></article>
+        <article class="service"><h3>Talleres temáticos</h3><p>Eventos escolares y manualidades temáticas con guion y materiales.</p></article>
+      </div>
+    </section>
+
+    <section id="galeria" class="hero-card">
+      <h2>Galería</h2>
+      <p>Ejemplos de materiales y actividades (clic para ampliar).</p>
+      <div class="gallery" id="gallery"></div>
+      <div class="add-image">
+        <label class="btn" for="addImageInput">➕ Agregar imagen</label>
+        <input type="file" id="addImageInput" accept="image/*" multiple hidden />
+      </div>
+    </section>
+
+    <section id="material" class="hero-card">
+      <h2>Material didáctico</h2>
+      <div class="materials">
+        <div class="material-card">
+          <h4>Paquete básico</h4>
+          <p>20 fichas + guía para padres</p>
+          <a class="chip" href="#">Descargar</a>
+        </div>
+        <div class="material-card dark">
+          <h4>Paquete creativo</h4>
+          <p>Actividades y manualidades imprimibles</p>
+          <a class="chip" href="#">Descargar</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto" class="hero-card">
+      <h2>Contacto</h2>
+      <div class="contact">
+        <div>
+          <div class="form">
+            <input id="name" placeholder="Tu nombre" />
+            <textarea id="message" placeholder="Mensaje / ¿Qué necesitas?" rows="5"></textarea>
+            <div class="buttons">
+              <button class="btn mail" onclick="sendEmail()">Enviar por correo</button>
+              <button class="btn whatsapp" onclick="sendWhatsApp()">Enviar por WhatsApp</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-inner">
+        <div class="brand-mini">
+          <div class="logo small">RY</div>
+          <div>
+            <div>Rayito de Luz</div>
+            <div class="muted">Clases & materiales</div>
+          </div>
+        </div>
+        <div class="copyright">© <span id="year"></span> Rayito de Luz. Todos los derechos reservados.</div>
+      </div>
+    </footer>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
