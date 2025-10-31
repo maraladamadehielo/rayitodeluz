@@ -390,8 +390,8 @@ function sendWhatsApp() {
     return;
   }
   
-  const texto = `Hola, soy ${name || "estoy interesado"} 👋%0A%0A${message}`;
-  const phoneNumber = '573000000000'; // CAMBIAR POR TU NÚMERO REAL
+  const texto = `Hola, soy ${name || "estoy interesad@"} 👋%0A%0A${message}`;
+  const phoneNumber = '573132536013'; // CAMBIAR POR TU NÚMERO REAL
   window.open(`https://wa.me/${phoneNumber}?text=${texto}`, "_blank");
 }
 
@@ -417,3 +417,4 @@ window.addEventListener('DOMContentLoaded', () => {
   loadGallery();
   loadMaterials();
 });
+
