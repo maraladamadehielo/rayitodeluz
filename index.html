@@ -5,128 +5,242 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Rayito de Luz ✨ - Clases y Material Didáctico</title>
   <meta name="description" content="Rayito de Luz - Clases personalizadas, refuerzo escolar y material didáctico. Sembrando amor por el aprendizaje."/>
+  
+  <!-- CSS -->
   <link rel="stylesheet" href="rayito.css">
 </head>
 <body>
-  <div class="wrap">
+  <div class="app-wrapper">
+    <!-- HEADER -->
     <header>
-      <div class="brand">
-        <div class="logo" aria-hidden="true">RY</div>
-        <div>
-          <div class="title">Rayito de Luz ✨</div>
-          <div class="subtitle">Sembrando amor por el aprendizaje</div>
+      <div class="header-content">
+        <div class="brand" onclick="navigateTo('inicio')">
+              <img src="logo.jpeg" alt="logo" class="logo"/>
+          <div class="brand-text">
+            <h1>Rayito de Luz ✨</h1>
+            <p>Sembrando amor por el aprendizaje</p>
+          </div>
         </div>
+        <nav id="mainNav">
+          <button onclick="navigateTo('inicio')" data-page="inicio" class="active">Inicio</button>
+          <button onclick="navigateTo('sobre')" data-page="sobre">Sobre mí</button>
+          <button onclick="navigateTo('servicios')" data-page="servicios">Servicios</button>
+          <button onclick="navigateTo('galeria')" data-page="galeria">Galería</button>
+          <button onclick="navigateTo('material')" data-page="material">Material</button>
+          <button onclick="navigateTo('contacto')" data-page="contacto" class="btn-cta">Contacto</button>
+          <button onclick="openAdminModal()" class="btn-admin">⚙️</button>
+        </nav>
       </div>
-
-      <nav aria-label="Navegación principal">
-        <a href="#inicio">Inicio</a>
-        <a href="#sobre">Sobre mí</a>
-        <a href="#servicios">Servicios</a>
-        <a href="#galeria">Galería</a>
-        <a href="#material">Material</a>
-        <a href="#contacto" class="cta">Contacto</a>
-      </nav>
     </header>
 
-    <section id="inicio" class="hero hero-card">
-      <div class="hero-card">
-        <h1>Rayito de Luz ✨ — Clases personalizadas & Material didáctico</h1>
-        <p>Clases de refuerzo, materiales imprimibles, y acompañamiento educativo para preescolar y primaria. Metodologías lúdicas y amorosas para que el aprendizaje sea divertido.</p>
-        <div class="features">
-          <div class="chip">Clases Personalizadas</div>
-          <div class="chip">Material imprimible</div>
-          <div class="chip">Talleres y manualidades</div>
-          <div class="chip">Plan lector</div>
-        </div>
-        <div class="hero-buttons">
-          <a class="btn whatsapp" href="#contacto">Contactar por WhatsApp</a>
-          <a class="link" href="#material">Ver material ↓</a>
-        </div>
-      </div>
-
-      <aside class="aside-card">
-        <h3>Sesiones</h3>
-        <p>Clases individuales y grupales. Planes por horas o paquetes mensuales. Horarios flexibles.</p>
-        <ul>
-          <li>Preescolar</li>
-          <li>Primaria</li>
-          <li>Material imprimible</li>
-        </ul>
-      </aside>
-    </section>
-
-    <section id="sobre" class="hero-card">
-      <h2>Sobre Rayito de Luz</h2>
-      <p>Soy Yurley, fundadora de Rayito de Luz. Creo en el aprendizaje por el juego, en materiales bonitos que motiven al niño y en acompañar a las familias con recursos claros y sencillos.</p>
-      <p><strong>Metodología:</strong> actividades lúdicas, lecturas guiadas, fichas imprimibles y trabajo con padres.</p>
-    </section>
-
-    <section id="servicios" class="hero-card">
-      <h2>Nuestros servicios</h2>
-      <div class="grid">
-        <article class="service"><h3>Clases individuales</h3><p>Sesiones enfocadas en las necesidades del niño: lectura, matemáticas y habilidades socioemocionales.</p></article>
-        <article class="service"><h3>Clases grupales</h3><p>Talleres de lectura y manualidades para grupos pequeños con dinámicas divertidas.</p></article>
-        <article class="service"><h3>Material imprimible</h3><p>Fichas, juegos de mesa didácticos en PDF y guías para padres listos para imprimir.</p></article>
-        <article class="service"><h3>Talleres temáticos</h3><p>Eventos escolares y manualidades temáticas con guion y materiales.</p></article>
-      </div>
-    </section>
-
-    <section id="galeria" class="hero-card">
-      <h2>Galería</h2>
-      <p>Ejemplos de materiales y actividades (clic para ampliar).</p>
-      <div class="gallery" id="gallery"></div>
-      <div class="add-image">
-        <label class="btn" for="addImageInput">➕ Agregar imagen</label>
-        <input type="file" id="addImageInput" accept="image/*" multiple hidden />
-      </div>
-    </section>
-
-    <section id="material" class="hero-card">
-      <h2>Material didáctico</h2>
-      <div class="materials">
-        <div class="material-card">
-          <h4>Paquete básico</h4>
-          <p>20 fichas + guía para padres</p>
-          <a class="chip" href="#">Descargar</a>
-        </div>
-        <div class="material-card dark">
-          <h4>Paquete creativo</h4>
-          <p>Actividades y manualidades imprimibles</p>
-          <a class="chip" href="#">Descargar</a>
-        </div>
-      </div>
-    </section>
-
-    <section id="contacto" class="hero-card">
-      <h2>Contacto</h2>
-      <div class="contact">
-        <div>
-          <div class="form">
-            <input id="name" placeholder="Tu nombre" />
-            <textarea id="message" placeholder="Mensaje / ¿Qué necesitas?" rows="5"></textarea>
-            <div class="buttons">
-              <button class="btn mail" onclick="sendEmail()">Enviar por correo</button>
-              <button class="btn whatsapp" onclick="sendWhatsApp()">Enviar por WhatsApp</button>
+    <!-- PÁGINA INICIO -->
+    <div id="page-inicio" class="page active">
+      <section>
+        <div class="hero">
+          <div class="hero-main">
+            <h2>Rayito de Luz ✨ – Clases personalizadas & Material didáctico</h2>
+            <p>Clases de refuerzo, materiales imprimibles, y acompañamiento educativo para preescolar y primaria. Metodologías lúdicas y amorosas para que el aprendizaje sea divertido.</p>
+            <div class="features">
+              <span class="chip">Clases Personalizadas</span>
+              <span class="chip">Material imprimible</span>
+              <span class="chip">Talleres y manualidades</span>
+              <span class="chip">Plan lector</span>
+            </div>
+            <div class="hero-buttons">
+              <button class="btn btn-whatsapp" onclick="navigateTo('contacto')">Contactar por WhatsApp</button>
+              <a class="link" onclick="navigateTo('material')">Ver material →</a>
             </div>
           </div>
+          <aside class="aside-card">
+            <h3>Sesiones</h3>
+            <p>Clases individuales y grupales. Planes por horas o paquetes mensuales. Horarios flexibles.</p>
+            <ul>
+              <li>Preescolar</li>
+              <li>Primaria</li>
+              <li>Material imprimible</li>
+            </ul>
+          </aside>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
 
-    <footer>
-      <div class="footer-inner">
-        <div class="brand-mini">
-          <div class="logo small">RY</div>
-          <div>
-            <div>Rayito de Luz</div>
-            <div class="muted">Clases & materiales</div>
+    <!-- PÁGINA SOBRE MÍ -->
+    <div id="page-sobre" class="page">
+      <section>
+        <h2>Sobre Rayito de Luz</h2>
+        <p>Soy Yurley, fundadora de Rayito de Luz. Creo en el aprendizaje por el juego, en materiales bonitos que motiven al niño y en acompañar a las familias con recursos claros y sencillos.</p>
+        <p><strong>Metodología:</strong> actividades lúdicas, lecturas guiadas, fichas imprimibles y trabajo con los pequeños.</p>
+        <p>Mi misión es sembrar amor por el aprendizaje en cada niño, creando experiencias educativas significativas que combinen diversión y conocimiento.</p>
+        <div class="hero-buttons">
+          <button class="btn" onclick="navigateTo('servicios')">Ver servicios</button>
+          <button class="btn btn-secondary" onclick="navigateTo('contacto')">Contáctame</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- PÁGINA SERVICIOS -->
+    <div id="page-servicios" class="page">
+      <section>
+        <h2>Nuestros servicios</h2>
+        <div class="grid">
+          <div class="service">
+            <h3>Clases individuales</h3>
+            <p>Sesiones enfocadas en las necesidades del niño: lectura, matemáticas y habilidades socioemocionales.</p>
+          </div>
+          <div class="service">
+            <h3>Clases grupales</h3>
+            <p>Talleres de lectura y manualidades para grupos pequeños con dinámicas divertidas.</p>
+          </div>
+          <div class="service">
+            <h3>Material imprimible</h3>
+            <p>Fichas, juegos de mesa didácticos en PDF y guías para niños listos para imprimir.</p>
+          </div>
+          <div class="service">
+            <h3>Talleres temáticos</h3>
+            <p>Eventos escolares y manualidades temáticas con guion y materiales.</p>
           </div>
         </div>
-        <div class="copyright">© <span id="year"></span> Rayito de Luz. Todos los derechos reservados.</div>
+        <div class="hero-buttons" style="margin-top: 2rem;">
+          <button class="btn btn-whatsapp" onclick="navigateTo('contacto')">Solicitar información</button>
+          <button class="btn btn-secondary" onclick="navigateTo('material')">Ver materiales</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- PÁGINA GALERÍA -->
+    <div id="page-galeria" class="page">
+      <section>
+        <h2>Galería</h2>
+        <p>Ejemplos de materiales y actividades.</p>
+        <div class="gallery" id="gallery"></div>
+        <div id="adminGalleryControls" style="display:none; text-align: center; margin-top: 2rem;">
+          <label class="btn" for="addImageInput">➕ Agregar imagen</label>
+          <input type="file" id="addImageInput" accept="image/*" style="display:none" multiple />
+        </div>
+      </section>
+    </div>
+
+    <!-- PÁGINA MATERIAL -->
+    <div id="page-material" class="page">
+      <section>
+        <h2>Material didáctico</h2>
+        <p>Descarga recursos educativos listos para usar con tus niños.</p>
+        <div class="materials" id="materialsContainer"></div>
+        <div id="adminMaterialControls" style="display:none; text-align: center; margin-top: 2rem;">
+          <button class="btn" onclick="openAddMaterialModal()">➕ Agregar material</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- PÁGINA CONTACTO -->
+    <div id="page-contacto" class="page">
+      <section>
+        <h2>Contacto</h2>
+        <p>¿Tienes preguntas o quieres información sobre nuestros servicios? ¡Escríbenos!</p>
+        <div class="form-group">
+          <input id="name" placeholder="Tu nombre" />
+        </div>
+        <div class="form-group">
+          <textarea id="message" placeholder="Mensaje / ¿Qué necesitas?" rows="5"></textarea>
+        </div>
+        <div class="hero-buttons">
+          <button class="btn btn-mail" onclick="sendEmail()">Enviar por correo</button>
+          <button class="btn btn-whatsapp" onclick="sendWhatsApp()">Enviar por WhatsApp</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="logo-small">RY</div>
+          <div>
+            <div style="font-weight: 600;">Rayito de Luz</div>
+            <div style="font-size: 0.85rem; color: #777;">Clases & materiales</div>
+          </div>
+        </div>
+        <div style="color: #777; font-size: 0.9rem;">
+          © <span id="year"></span> Rayito de Luz. Todos los derechos reservados.
+        </div>
+        <div class="creator-badge" title="Creado con amor por maraladamadehielo">
+          <span>❄️</span>
+          <span>By per <strong>maraladamadehielo</strong></span>
+          <span>🎨</span>
+        </div>
       </div>
     </footer>
   </div>
+
+  <!-- MODAL ADMINISTRACIÓN -->
+  <div id="adminModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style="margin: 0;">Panel de Administración</h3>
+        <button class="modal-close" onclick="closeAdminModal()">&times;</button>
+      </div>
+
+      <!-- Primera vez: Crear contraseña -->
+      <div id="setupPassword" style="display:none;">
+        <div class="alert alert-info">
+          🔐 Es tu primera vez aquí. Crea una contraseña segura para proteger tu panel de administración.
+        </div>
+        <div class="form-group">
+          <input type="password" id="newPassword" placeholder="Crea tu contraseña" />
+        </div>
+        <div class="form-group">
+          <input type="password" id="confirmPassword" placeholder="Confirma tu contraseña" />
+        </div>
+        <button class="btn" style="width: 100%;" onclick="setupAdminPassword()">Crear contraseña</button>
+      </div>
+
+      <!-- Login normal -->
+      <div id="adminLogin" style="display:none;">
+        <p>Ingresa tu contraseña para gestionar el contenido:</p>
+        <div class="form-group">
+          <input type="password" id="adminPassword" placeholder="Contraseña" />
+        </div>
+        <button class="btn" style="width: 100%;" onclick="loginAdmin()">Ingresar</button>
+      </div>
+
+      <!-- Panel admin activo -->
+      <div id="adminPanel" style="display:none;">
+        <div class="alert alert-success">
+          ✅ <span class="admin-badge">Modo Administrador Activo</span>
+        </div>
+        <p>Ahora puedes agregar y eliminar imágenes en la galería y gestionar materiales didácticos.</p>
+        <div class="hero-buttons">
+          <button class="btn btn-secondary" onclick="logoutAdmin()">Cerrar sesión</button>
+          <button class="btn btn-danger" onclick="resetPassword()">Cambiar contraseña</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL AGREGAR MATERIAL -->
+  <div id="addMaterialModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style="margin: 0;">Agregar Material Didáctico</h3>
+        <button class="modal-close" onclick="closeAddMaterialModal()">&times;</button>
+      </div>
+      <div class="form-group">
+        <input type="text" id="materialTitle" placeholder="Título del material" />
+      </div>
+      <div class="form-group">
+        <textarea id="materialDesc" placeholder="Descripción breve" rows="3"></textarea>
+      </div>
+      <div class="form-group">
+        <input type="text" id="materialLink" placeholder="URL de descarga (opcional)" />
+      </div>
+      <div class="hero-buttons">
+        <button class="btn" onclick="addMaterial()">Agregar</button>
+        <button class="btn btn-secondary" onclick="closeAddMaterialModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
   <script src="script.js"></script>
 </body>
 </html>
-
