@@ -6,6 +6,9 @@
   <title>Rayito de Luz ✨ - Clases y Material Didáctico</title>
   <meta name="description" content="Rayito de Luz - Clases personalizadas, refuerzo escolar y material didáctico. Sembrando amor por el aprendizaje."/>
   
+  <!-- Font Awesome para iconos de redes sociales -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
   <!-- CSS -->
   <link rel="stylesheet" href="rayito.css">
 </head>
@@ -15,7 +18,7 @@
     <header>
       <div class="header-content">
         <div class="brand" onclick="navigateTo('inicio')">
-              <img src="logo.jpeg" alt="logo" class="logo"/>
+          <img src="logo.jpeg" alt="logo" class="logo"/>
           <div class="brand-text">
             <h1>Rayito de Luz ✨</h1>
             <p>Sembrando amor por el aprendizaje</p>
@@ -28,6 +31,23 @@
           <button onclick="navigateTo('galeria')" data-page="galeria">Galería</button>
           <button onclick="navigateTo('material')" data-page="material">Material</button>
           <button onclick="navigateTo('contacto')" data-page="contacto" class="btn-cta">Contacto</button>
+          
+          <!-- Redes Sociales en Header -->
+          <div class="social-links">
+            <a href="https://wa.me/573132536013" target="_blank" class="social-icon whatsapp" title="WhatsApp">
+              <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="https://instagram.com/aula_rayitodeluz" target="_blank" class="social-icon instagram" title="Instagram">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://facebook.com/Yurley Mantilla" target="_blank" class="social-icon facebook" title="Facebook">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://tiktok.com/@maestradayana.ofc" target="_blank" class="social-icon tiktok" title="TikTok">
+              <i class="fab fa-tiktok"></i>
+            </a>
+          </div>
+          
           <button onclick="openAdminModal()" class="btn-admin">⚙️</button>
         </nav>
       </div>
@@ -160,12 +180,37 @@
             <div style="font-size: 0.85rem; color: #777;">Clases & materiales</div>
           </div>
         </div>
+        
+        <!-- Redes Sociales en Footer -->
+        <div class="social-links-footer">
+          <a href="https://wa.me/573000000000" target="_blank" class="social-link-footer whatsapp">
+            <i class="fab fa-whatsapp"></i>
+            <span>WhatsApp</span>
+          </a>
+          <a href="https://instagram.com/rayitodeluz" target="_blank" class="social-link-footer instagram">
+            <i class="fab fa-instagram"></i>
+            <span>Instagram</span>
+          </a>
+          <a href="https://facebook.com/rayitodeluz" target="_blank" class="social-link-footer facebook">
+            <i class="fab fa-facebook-f"></i>
+            <span>Facebook</span>
+          </a>
+          <a href="https://tiktok.com/@rayitodeluz" target="_blank" class="social-link-footer tiktok">
+            <i class="fab fa-tiktok"></i>
+            <span>TikTok</span>
+          </a>
+          <a href="https://youtube.com/@rayitodeluz" target="_blank" class="social-link-footer youtube">
+            <i class="fab fa-youtube"></i>
+            <span>YouTube</span>
+          </a>
+        </div>
+        
         <div style="color: #777; font-size: 0.9rem;">
           © <span id="year"></span> Rayito de Luz. Todos los derechos reservados.
         </div>
         <div class="creator-badge" title="Creado con amor por maraladamadehielo">
           <span>❄️</span>
-          <span>By per <strong>maraladamadehielo</strong></span>
+          <span>By <strong>maraladamadehielo</strong></span>
           <span>🎨</span>
         </div>
       </div>
@@ -180,38 +225,30 @@
         <button class="modal-close" onclick="closeAdminModal()">&times;</button>
       </div>
 
-      <!-- Primera vez: Crear contraseña -->
-      <div id="setupPassword" style="display:none;">
-        <div class="alert alert-info">
-          🔐 Es tu primera vez aquí. Crea una contraseña segura para proteger tu panel de administración.
+      <!-- Login de administrador -->
+      <div id="adminLogin" style="display:block;">
+        <p style="margin-bottom: 1rem; color: #666;">Ingresa tus credenciales de administrador:</p>
+        <div class="form-group">
+          <input type="text" id="adminUsername" placeholder="Usuario" autocomplete="username" />
         </div>
         <div class="form-group">
-          <input type="password" id="newPassword" placeholder="Crea tu contraseña" />
+          <input type="password" id="adminPassword" placeholder="Contraseña" autocomplete="current-password" />
         </div>
-        <div class="form-group">
-          <input type="password" id="confirmPassword" placeholder="Confirma tu contraseña" />
-        </div>
-        <button class="btn" style="width: 100%;" onclick="setupAdminPassword()">Crear contraseña</button>
-      </div>
-
-      <!-- Login normal -->
-      <div id="adminLogin" style="display:none;">
-        <p>Ingresa tu contraseña para gestionar el contenido:</p>
-        <div class="form-group">
-          <input type="password" id="adminPassword" placeholder="Contraseña" />
-        </div>
-        <button class="btn" style="width: 100%;" onclick="loginAdmin()">Ingresar</button>
+        <button class="btn" style="width: 100%;" onclick="loginAdmin()">Iniciar sesión</button>
+        <p style="margin-top: 1rem; text-align: center; font-size: 0.85rem; color: #999;">
+          ¿Olvidaste tus credenciales? <a href="#" onclick="showResetForm(); return false;" style="color: var(--morado); font-weight: 600;">Restablecer</a>
+        </p>
       </div>
 
       <!-- Panel admin activo -->
       <div id="adminPanel" style="display:none;">
         <div class="alert alert-success">
-          ✅ <span class="admin-badge">Modo Administrador Activo</span>
+          ✅ <span class="admin-badge">Administrador</span>
         </div>
-        <p>Ahora puedes agregar y eliminar imágenes en la galería y gestionar materiales didácticos.</p>
+        <p id="welcomeMessage" style="font-weight: 600; margin-bottom: 1rem; font-size: 1.1rem;"></p>
+        <p style="color: #666; font-size: 0.9rem; margin-bottom: 1.5rem;">Ahora puedes gestionar imágenes en la galería y materiales didácticos.</p>
         <div class="hero-buttons">
           <button class="btn btn-secondary" onclick="logoutAdmin()">Cerrar sesión</button>
-          <button class="btn btn-danger" onclick="resetPassword()">Cambiar contraseña</button>
         </div>
       </div>
     </div>
