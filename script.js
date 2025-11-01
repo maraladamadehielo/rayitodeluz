@@ -7,8 +7,8 @@
 // CONFIGURACIÓN DE ADMINISTRADOR 
 // ========================================
 const ADMIN_CONFIG = {
-  username: '',           // CAMBIA ESTO por tu usuario
-  password: '',          // CAMBIA ESTO por tu contraseña
+  username: 'Rayodeluz',           // CAMBIA ESTO por tu usuario
+  password: 'rayito2025',          // CAMBIA ESTO por tu contraseña
   secretCode: 'RYL2024'   // Código secreto para restablecer
 };
 // ========================================
@@ -544,3 +544,4 @@ window.addEventListener('DOMContentLoaded', () => {
   loadMaterials();
   checkExistingSession();
 });
+
