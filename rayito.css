@@ -68,16 +68,10 @@ header {
 }
 
 .logo {
-  background: var(--morado);
-  color: white;
-  font-weight: bold;
-  font-size: 1.5rem;
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  object-fit: cover;
   flex-shrink: 0;
 }
 
@@ -142,6 +136,121 @@ nav button.btn-cta:hover {
 nav button.btn-admin {
   font-size: 1.5rem;
   padding: 0.3rem;
+}
+
+/* ========================================
+   REDES SOCIALES
+   ======================================== */
+.social-links {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.social-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.social-icon::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.2);
+  transform: scale(0);
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.social-icon:hover::before {
+  transform: scale(1);
+}
+
+.social-icon:hover {
+  transform: translateY(-4px) scale(1.1);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+/* Colores específicos por red social */
+.social-icon.whatsapp {
+  background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+}
+
+.social-icon.instagram {
+  background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+
+.social-icon.facebook {
+  background: linear-gradient(135deg, #4267B2 0%, #2d4373 100%);
+}
+
+.social-icon.tiktok {
+  background: linear-gradient(135deg, #000000 0%, #ff0050 50%, #00f2ea 100%);
+}
+
+.social-icon.youtube {
+  background: linear-gradient(135deg, #FF0000 0%, #cc0000 100%);
+}
+
+/* Versión footer con texto */
+.social-links-footer {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.social-link-footer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 25px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.social-link-footer:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+.social-link-footer.whatsapp {
+  background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+}
+
+.social-link-footer.instagram {
+  background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+
+.social-link-footer.facebook {
+  background: linear-gradient(135deg, #4267B2 0%, #2d4373 100%);
+}
+
+.social-link-footer.tiktok {
+  background: linear-gradient(135deg, #000000 0%, #ff0050 50%, #00f2ea 100%);
+}
+
+.social-link-footer.youtube {
+  background: linear-gradient(135deg, #FF0000 0%, #cc0000 100%);
 }
 
 /* ========================================
@@ -661,6 +770,11 @@ footer {
   h2 {
     font-size: 1.6rem;
   }
+  
+  .social-links-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 
 @media (max-width: 480px) {
@@ -677,8 +791,7 @@ footer {
   }
 
   .logo {
-    width: 40px;
-    height: 40px;
-    font-size: 1.2rem;
+    width: 60px;
+    height: 60px;
   }
 }
