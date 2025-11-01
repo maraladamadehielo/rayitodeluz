@@ -4,9 +4,21 @@
 // By maraladamadehielo
 // ========================================
 
+// CONFIGURACIÓN DE ADMINISTRADOR 
+// ========================================
+const ADMIN_CONFIG = {
+  username: '',           // CAMBIA ESTO por tu usuario
+  password: '',          // CAMBIA ESTO por tu contraseña
+  secretCode: 'RYL2024'   // Código secreto para restablecer
+};
+// ========================================
+
 // Variables globales
 let isAdmin = false;
 let currentPage = 'inicio';
+let loginAttempts = 0;
+const MAX_LOGIN_ATTEMPTS = 3;
+const LOCKOUT_TIME = 5 * 60 * 1000; // 5 minutos
 
 // Año automático en el footer
 document.getElementById("year").textContent = new Date().getFullYear();
@@ -42,7 +54,7 @@ function navigateTo(pageName) {
 // ========================================
 async function saveData(key, value) {
   try {
-    await window.storage.set(key, JSON.stringify(value));
+    localStorage.setItem(key, JSON.stringify(value));
     return true;
   } catch (error) {
     console.error('Error guardando datos:', error);
@@ -52,8 +64,9 @@ async function saveData(key, value) {
 
 async function loadData(key) {
   try {
-    const result = await window.storage.get(key);
-    return result ? JSON.parse(result.value) : null;
+    const data = localStorage.getItem(key);
+    if (data) {
+      return JSON.parse(data)};
   } catch (error) {
     return null;
   }
@@ -61,7 +74,7 @@ async function loadData(key) {
 
 async function deleteData(key) {
   try {
-    await window.storage.delete(key);
+    localStorage.removeItem(key);
     return true;
   } catch (error) {
     return false;
@@ -69,95 +82,188 @@ async function deleteData(key) {
 }
 
 // ========================================
-// SISTEMA DE CONTRASEÑA
+// SISTEMA DE LOGIN SEGURO
 // ========================================
-function hashPassword(password) {
-  let hash = 0;
-  for (let i = 0; i < password.length; i++) {
-    const char = password.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
+async function checkLoginLockout() {
+  const lockoutData = await loadData('admin-lockout');
+  if (lockoutData) {
+    const now = Date.now();
+    if (now < lockoutData.until) {
+      const remainingMinutes = Math.ceil((lockoutData.until - now) / 60000);
+      return {
+        locked: true,
+        minutes: remainingMinutes
+      };
+    } else {
+      await deleteData('admin-lockout');
+      loginAttempts = 0;
+    }
   }
-  return hash.toString();
+  return { locked: false };
 }
 
-async function checkPasswordSetup() {
-  const hasPassword = await loadData('admin-password-hash');
-  if (!hasPassword) {
-    document.getElementById('setupPassword').style.display = 'block';
-    document.getElementById('adminLogin').style.display = 'none';
-  } else {
-    document.getElementById('setupPassword').style.display = 'none';
-    document.getElementById('adminLogin').style.display = 'block';
-  }
-}
-
-async function setupAdminPassword() {
-  const password = document.getElementById('newPassword').value;
-  const confirm = document.getElementById('confirmPassword').value;
-  
-  if (!password || password.length < 6) {
-    alert('La contraseña debe tener al menos 6 caracteres');
-    return;
-  }
-  
-  if (password !== confirm) {
-    alert('Las contraseñas no coinciden');
-    return;
-  }
-  
-  const hash = hashPassword(password);
-  await saveData('admin-password-hash', hash);
-  alert('✅ Contraseña creada exitosamente');
-  
-  // Limpiar campos
-  document.getElementById('newPassword').value = '';
-  document.getElementById('confirmPassword').value = '';
-  
-  checkPasswordSetup();
+async function setLoginLockout() {
+  const lockoutUntil = Date.now() + LOCKOUT_TIME;
+  await saveData('admin-lockout', { until: lockoutUntil });
 }
 
 async function loginAdmin() {
-  const password = document.getElementById('adminPassword').value;
-  const hash = hashPassword(password);
-  const storedHash = await loadData('admin-password-hash');
+  // Verificar lockout
+  const lockout = await checkLoginLockout();
+  if (lockout.locked) {
+    alert(`❌ Demasiados intentos fallidos. Espera ${lockout.minutes} minutos.`);
+    return;
+  }
   
-  if (hash === storedHash) {
+  const username = document.getElementById('adminUsername').value.trim();
+  const password = document.getElementById('adminPassword').value;
+  
+  if (!username || !password) {
+    alert('Por favor completa todos los campos');
+    return;
+  }
+  
+  // Verificar credenciales contra la configuración
+  if (username === ADMIN_CONFIG.username && password === ADMIN_CONFIG.password) {
+    // Login exitoso
     isAdmin = true;
+    loginAttempts = 0;
+    
+    // Actualizar UI
     document.getElementById('adminLogin').style.display = 'none';
     document.getElementById('adminPanel').style.display = 'block';
     document.getElementById('adminGalleryControls').style.display = 'block';
     document.getElementById('adminMaterialControls').style.display = 'block';
+    document.getElementById('welcomeMessage').textContent = `¡Bienvenido, ${username}!`;
+    
+    // Limpiar campos
+    document.getElementById('adminUsername').value = '';
     document.getElementById('adminPassword').value = '';
+    
+    // Guardar sesión
+    await saveData('admin-session', {
+      active: true,
+      username: username,
+      timestamp: Date.now()
+    });
     
     // Recargar datos para mostrar controles de admin
     if (currentPage === 'galeria') loadGallery();
     if (currentPage === 'material') loadMaterials();
+    
+    showNotification('✅ Sesión iniciada correctamente');
   } else {
-    alert('❌ Contraseña incorrecta');
+    // Login fallido
+    loginAttempts++;
+    
+    if (loginAttempts >= MAX_LOGIN_ATTEMPTS) {
+      await setLoginLockout();
+      alert(`❌ Demasiados intentos fallidos. Cuenta bloqueada por 5 minutos.`);
+      loginAttempts = 0;
+    } else {
+      const remaining = MAX_LOGIN_ATTEMPTS - loginAttempts;
+      alert(`❌ Usuario o contraseña incorrectos. Intentos restantes: ${remaining}`);
+    }
   }
 }
 
 function logoutAdmin() {
+  if (!confirm('¿Cerrar sesión de administrador?')) return;
+  
   isAdmin = false;
+  
+  // Limpiar sesión
+  deleteData('admin-session');
+  
+  // Actualizar UI
   document.getElementById('adminLogin').style.display = 'block';
   document.getElementById('adminPanel').style.display = 'none';
   document.getElementById('adminGalleryControls').style.display = 'none';
   document.getElementById('adminMaterialControls').style.display = 'none';
+  
   closeAdminModal();
   
   // Recargar datos para ocultar controles de admin
   if (currentPage === 'galeria') loadGallery();
   if (currentPage === 'material') loadMaterials();
+  
+  showNotification('👋 Sesión cerrada');
 }
 
-async function resetPassword() {
-  if (confirm('¿Deseas cambiar tu contraseña de administrador?')) {
-    await deleteData('admin-password-hash');
-    logoutAdmin();
-    alert('Contraseña eliminada. Crea una nueva la próxima vez que entres.');
+function showResetForm() {
+  const code = prompt('⚠️ Ingresa el código de seguridad para restablecer:');
+  
+  if (code === ADMIN_CONFIG.secretCode) {
+    alert('⚠️ IMPORTANTE: Las credenciales predeterminadas son:\n\nUsuario: admin\nContraseña: rayito2024\n\nPuedes cambiarlas editando ADMIN_CONFIG en script.js');
+  } else {
+    alert('❌ Código de seguridad incorrecto');
   }
 }
+
+// Verificar sesión al abrir modal
+async function checkExistingSession() {
+  const session = await loadData('admin-session');
+  if (session && session.active) {
+    const sessionAge = Date.now() - session.timestamp;
+    const maxAge = 24 * 60 * 60 * 1000; // 24 horas
+    
+    if (sessionAge < maxAge) {
+      isAdmin = true;
+      document.getElementById('adminLogin').style.display = 'none';
+      document.getElementById('adminPanel').style.display = 'block';
+      document.getElementById('adminGalleryControls').style.display = 'block';
+      document.getElementById('adminMaterialControls').style.display = 'block';
+      document.getElementById('welcomeMessage').textContent = `¡Bienvenido de nuevo, ${session.username}!`;
+      
+      if (currentPage === 'galeria') loadGallery();
+      if (currentPage === 'material') loadMaterials();
+    } else {
+      await deleteData('admin-session');
+    }
+  }
+}
+
+// ========================================
+// NOTIFICACIONES
+// ========================================
+function showNotification(message) {
+  const notification = document.createElement('div');
+  notification.textContent = message;
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    background: #4caf50;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 10000;
+    animation: slideIn 0.3s ease;
+    font-weight: 600;
+  `;
+  
+  document.body.appendChild(notification);
+  
+  setTimeout(() => {
+    notification.style.animation = 'slideOut 0.3s ease';
+    setTimeout(() => notification.remove(), 300);
+  }, 3000);
+}
+
+// Agregar animaciones de notificación
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideIn {
+    from { transform: translateX(400px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+  @keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(400px); opacity: 0; }
+  }
+`;
+document.head.appendChild(style);
 
 // ========================================
 // GALERÍA
@@ -201,6 +307,7 @@ async function deleteImage(index) {
   images.splice(index, 1);
   await saveData('gallery-images', images);
   loadGallery();
+  showNotification('🗑️ Imagen eliminada');
 }
 
 // Evento para agregar imágenes
@@ -209,6 +316,8 @@ document.getElementById('addImageInput').addEventListener('change', async (e) =>
   
   const files = e.target.files;
   if (!files.length) return;
+
+  showNotification('📤 Subiendo imágenes...');
 
   const readerPromises = [...files].map(file => {
     return new Promise((resolve) => {
@@ -229,6 +338,8 @@ document.getElementById('addImageInput').addEventListener('change', async (e) =>
   await saveData('gallery-images', updated);
   loadGallery();
   e.target.value = '';
+  
+  showNotification(`✅ ${newImages.length} imagen(es) agregada(s)`);
 });
 
 // ========================================
@@ -337,6 +448,8 @@ async function addMaterial() {
   document.getElementById('materialTitle').value = '';
   document.getElementById('materialDesc').value = '';
   document.getElementById('materialLink').value = '';
+  
+  showNotification('✅ Material agregado');
 }
 
 async function deleteMaterial(id) {
@@ -346,14 +459,15 @@ async function deleteMaterial(id) {
   const filtered = materials.filter(m => m.id !== id);
   await saveData('materials', filtered);
   loadMaterials();
+  showNotification('🗑️ Material eliminado');
 }
 
 // ========================================
 // MODALES
 // ========================================
-function openAdminModal() {
+async function openAdminModal() {
   document.getElementById('adminModal').classList.add('active');
-  checkPasswordSetup();
+  await checkExistingSession();
 }
 
 function closeAdminModal() {
@@ -361,7 +475,10 @@ function closeAdminModal() {
 }
 
 function openAddMaterialModal() {
-  if (!isAdmin) return;
+  if (!isAdmin) {
+    alert('Debes iniciar sesión como administrador');
+    return;
+  }
   document.getElementById('addMaterialModal').classList.add('active');
 }
 
@@ -378,6 +495,15 @@ document.querySelectorAll('.modal').forEach(modal => {
   });
 });
 
+// Cerrar modales con tecla ESC
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.classList.remove('active');
+    });
+  }
+});
+
 // ========================================
 // CONTACTO
 // ========================================
@@ -390,7 +516,7 @@ function sendWhatsApp() {
     return;
   }
   
-  const texto = `Hola, soy ${name || "estoy interesad@"} 👋%0A%0A${message}`;
+  const texto = `Hola, soy ${name || "estoy interesado"} 👋%0A%0A${message}`;
   const phoneNumber = '573132536013'; // CAMBIAR POR TU NÚMERO REAL
   window.open(`https://wa.me/${phoneNumber}?text=${texto}`, "_blank");
 }
@@ -416,5 +542,5 @@ function sendEmail() {
 window.addEventListener('DOMContentLoaded', () => {
   loadGallery();
   loadMaterials();
+  checkExistingSession();
 });
-
